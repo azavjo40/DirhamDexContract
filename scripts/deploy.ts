@@ -16,3 +16,5 @@ main()
     console.error(error);
     process.exit(1);
   });
+
+//run script: npx hardhat run scripts/deploy.ts --network sepolia

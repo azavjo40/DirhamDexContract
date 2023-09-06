@@ -2,13 +2,15 @@
   "name": "hardhat-contract",
   "version": "1.0.0",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "compile": "npx hardhat compile"
   },
   "keywords": [],
   "author": "Azam Sufiev",
   "license": "ISC",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^3.0.0",
-    "hardhat": "^2.17.2"
+    "ethers": "^6.7.1",
+    "hardhat": "^2.17.2",
+    "dotenv": "^16.0.3"
   }
 }
