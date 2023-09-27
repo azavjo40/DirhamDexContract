@@ -7,12 +7,12 @@ import "hardhat/console.sol";
 
 
 // This is the main building block for smart contracts.
-contract Token {
-    // Some string type variables to identify the token.
-    string public name = "My Hardhat Token";
+contract Dirham {
+    // Some string type variables to identify the Dirhams.
+    string public name = "My Hardhat Dirham";
     string public symbol = "MHT";
 
-    // The fixed amount of tokens, stored in an unsigned integer type variable.
+    // The fixed amount of Dirhams, stored in an unsigned integer type variable.
     uint256 public totalSupply = 1000000;
 
     // An address type variable is used to store ethereum accounts.
@@ -36,19 +36,19 @@ contract Token {
     }
 
     /**
-     * A function to transfer tokens.
+     * A function to transfer Dirhams.
      *
      * The `external` modifier makes a function *only* callable from *outside*
      * the contract.
      */
     function transfer(address to, uint256 amount) external {
-        // Check if the transaction sender has enough tokens.
+        // Check if the transaction sender has enough Dirhams.
         // If `require`'s first argument evaluates to `false` then the
         // transaction will revert.
-        require(balances[msg.sender] >= amount, "Not enough tokens");
+        require(balances[msg.sender] >= amount, "Not enough Dirhams");
 
         console.log(
-        "Transferring from %s to %s %s tokens",
+        "Transferring from %s to %s %s Dirhams",
         msg.sender,
         to,
         amount
@@ -63,7 +63,7 @@ contract Token {
     }
 
     /**
-     * Read only function to retrieve the token balance of a given account.
+     * Read only function to retrieve the Dirhams balance of a given account.
      *
      * The `view` modifier indicates that it doesn't modify the contract's
      * state, which allows us to call it without executing a transaction.

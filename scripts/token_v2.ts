@@ -9,16 +9,16 @@ async function main() {
     const [owner] = await ethers.getSigners();
     console.log("Using account:", deployer.address);
 
-    const TokenContract = await ethers.getContractFactory("Token");
+    const DirhamContract = await ethers.getContractFactory("Dirham");
 
-    const token: any = TokenContract.attach(process.env.ADSRESS_CONTRACT!);
+    const dirham: any = DirhamContract.attach(process.env.DIRHAM_ADSRESS!);
 
     const addressToCheck = owner.address;
 
     // const res = await token.transfer(addressToCheck, 100);
     // console.log(res);
 
-    const balance = await token.balanceOf(addressToCheck);
+    const balance = await dirham.balanceOf(addressToCheck);
 
     console.log(`Balance of ${addressToCheck}: ${balance.toString()}`);
   } catch (e) {
