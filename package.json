@@ -5,7 +5,7 @@
     "cleanup": "npx rimraf cache artifacts typechain-types node_modules package-lock.json",
     "hardhat:compile": "npx hardhat compile",
     "hardhat:test": "npx hardhat test",
-    "hardhat:deploy:pre": "npx hardhat run scripts/deploy.ts --network sepolia",
+    "hardhat:deploy": "npx hardhat run scripts/deploy.ts --network sepolia",
     "hardhat:deploy:veryfy": "npx hardhat verify 'adress contract' --network sepolia"
   },
   "keywords": [],
@@ -18,6 +18,7 @@
     "hardhat": "^2.17.2"
   },
   "dependencies": {
+    "@openzeppelin/contracts": "^4.9.3",
     "readline": "^1.3.0"
   }
 }

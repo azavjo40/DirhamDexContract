@@ -9,7 +9,7 @@ async function main() {
     const [owner] = await ethers.getSigners();
     console.log("Using account:", deployer.address);
 
-    const DirhamContract = await ethers.getContractFactory("Dirham");
+    const DirhamContract = await ethers.getContractFactory("DirhamV1");
 
     const dirham: any = DirhamContract.attach(process.env.DIRHAM_ADSRESS!);
 
@@ -31,4 +31,4 @@ main().catch((error) => {
   process.exitCode = 1;
 });
 
-//run script:  npx hardhat run scripts/token_v2.ts --network sepolia
+//run script:  npx hardhat run scripts/dirham.ts --network sepolia
