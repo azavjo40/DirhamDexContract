@@ -3,18 +3,19 @@ import readline from "readline";
 
 const rl = readline.createInterface(process.stdin, process.stdout);
 require("dotenv").config();
-const { DIRHAM_ADSRESS } = process.env;
+const { USER_CONTRACT_ADSRESS } = process.env;
 
 async function main() {
   const [deployer] = await ethers.getSigners();
-  const DirhamContractFactory = await ethers.getContractFactory("DirhamV1");
-  let dirham;
-  if (DIRHAM_ADSRESS) {
-    dirham = DirhamContractFactory.attach(DIRHAM_ADSRESS!);
+  const UserContractFactory = await ethers.getContractFactory("UserContract");
+
+  let user;
+  if (USER_CONTRACT_ADSRESS) {
+    user = UserContractFactory.attach(USER_CONTRACT_ADSRESS!);
   } else {
-    dirham = await DirhamContractFactory.deploy(1000);
+    user = await UserContractFactory.deploy();
   }
-  console.log("DIRHAM_ADSRESS=" + (await dirham.getAddress()));
+  console.log("USER_CONTRACT_ADSRESS=" + (await user.getAddress()));
 }
 
 rl.question("Continue? (y/N)", (a) => {
@@ -30,4 +31,4 @@ rl.question("Continue? (y/N)", (a) => {
     });
 });
 
-//run script: npx hardhat run scripts/deploy.ts --network sepolia
+//run script: npx hardhat run scripts/deployUserContract.ts --network sepolia
