@@ -1,7 +1,19 @@
 pragma solidity ^0.8.0;
 
-contract UserContract {
-    mapping(address => bool) private admins;
+import "@openzeppelin/contracts/access/AccessControl.sol";
+
+contract UserContract is AccessControl {
+    bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
+    bytes32 public constant USER_ROLE = keccak256("USER_ROLE");
+
+    event UserRegistered(
+        uint256 userId,
+        address indexed walletAddress,
+        string firstName,
+        string lastName,
+        uint age
+    );
+    event UserRemoved(uint256 userId, address indexed walletAddress);
 
     struct User {
         uint256 id;
@@ -9,37 +21,16 @@ contract UserContract {
         string lastName;
         uint age;
         address walletAddress;
+        bool isDeleted;
     }
 
     User[] private users;
 
+    mapping(address => bool) private userExistsMap;
+
     constructor() {
-        admins[msg.sender] = true;
-    }
-
-    modifier onlyAdmin() {
-        require(isAdmin(msg.sender), "Only admin can call this function");
-        _;
-    }
-
-    function isAdmin(address _address) private view returns (bool) {
-        if (admins[_address]) {
-            return true;
-        }
-        return false;
-    }
-
-    function addAdmin(address _adminAddress) public onlyAdmin {
-        admins[_adminAddress] = true;
-    }
-
-    function userExists(address userAddress) internal view returns (bool) {
-        for (uint256 i = 0; i < users.length; i++) {
-            if (users[i].walletAddress == userAddress) {
-                return true;
-            }
-        }
-        return false;
+        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _setupRole(ADMIN_ROLE, msg.sender);
     }
 
     function registerUser(
@@ -47,7 +38,7 @@ contract UserContract {
         string memory lastName,
         uint age
     ) public {
-        require(!userExists(msg.sender), "User already registered");
+        require(!userExistsMap[msg.sender], "User already registered");
 
         uint256 userId = users.length;
         User memory newUser = User(
@@ -55,25 +46,42 @@ contract UserContract {
             firstName,
             lastName,
             age,
-            msg.sender
+            msg.sender,
+            false
         );
         users.push(newUser);
+        userExistsMap[msg.sender] = true;
+        emit UserRegistered(userId, msg.sender, firstName, lastName, age);
     }
 
     function getUserById(uint256 _userId) public view returns (User memory) {
         require(_userId < users.length, "User does not exist");
+
         User memory user = users[_userId];
+        require(user.walletAddress != address(0), "User does not exist");
+
         return user;
     }
 
-    function getUsers() public view onlyAdmin returns (User[] memory) {
+    function getUsers()
+        public
+        view
+        onlyRole(DEFAULT_ADMIN_ROLE)
+        returns (User[] memory)
+    {
         return users;
     }
 
-    function removeUser(uint256 userId) public onlyAdmin returns (bool) {
+    function removeUser(
+        uint256 userId
+    ) public onlyRole(DEFAULT_ADMIN_ROLE) returns (bool) {
         require(userId < users.length, "User does not exist");
-        users[userId] = users[users.length - 1];
-        users.pop();
+
+        User storage user = users[userId];
+        require(!user.isDeleted, "User already deleted");
+
+        user.isDeleted = true;
+        emit UserRemoved(userId, user.walletAddress);
         return true;
     }
 }
