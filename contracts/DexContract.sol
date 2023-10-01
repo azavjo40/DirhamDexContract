@@ -2,9 +2,12 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "./Dirham.sol";
 
 contract DexContract {
+    using SafeERC20 for IERC20;
+
     // Address of the Dirham contract
     address public dirhamContractAddress;
 
@@ -19,20 +22,28 @@ contract DexContract {
         uint256 rate, // Conversion rate from currency to tokens
         uint256 amount // Amount of currency to be converted
     ) external payable {
+        // Check that the user has authorized the contract to transfer
+        require(
+            IERC20(currencyContractAddress).allowance(
+                msg.sender,
+                address(this)
+            ) >= amount,
+            "Insufficient allowance"
+        );
+
+        // Transfer tokens from the user to the DexContract using SafeERC20.safeTransferFrom.
+        SafeERC20.safeTransferFrom(
+            IERC20(currencyContractAddress),
+            msg.sender,
+            address(this),
+            amount
+        );
+
         // Calculate the amount of tokens to mint based on the rate and user's input amount
         uint256 tokenAmount = amount * rate;
 
         // Check if the user has sufficient balance in the currency contract
-        require(
-            IERC20(currencyContractAddress).balanceOf(msg.sender) >= amount,
-            "Insufficient balance"
-        );
-
-        // Check if the user sent enough Ether to purchase the tokens
-        require(msg.value >= amount, "Insufficient Ether sent");
-
-        // Transfer the specified amount of currency from the user to DexContract
-        IERC20(currencyContractAddress).transferFrom(
+        IERC20(currencyContractAddress).safeTransferFrom(
             msg.sender,
             address(this),
             amount
@@ -61,6 +72,9 @@ contract DexContract {
         uint256 currencyAmount = amount / rate;
 
         // Transfer the specified amount of currency to the user
-        IERC20(currencyContractAddress).transfer(msg.sender, currencyAmount);
+        IERC20(currencyContractAddress).safeTransfer(
+            msg.sender,
+            currencyAmount
+        );
     }
 }
