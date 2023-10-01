@@ -7,12 +7,12 @@ const { DIRHAM_ADSRESS } = process.env;
 
 async function main() {
   const [deployer] = await ethers.getSigners();
-  const DirhamContractFactory = await ethers.getContractFactory("DirhamV1");
+  const DirhamContractFactory = await ethers.getContractFactory("Dirham");
   let dirham;
   if (DIRHAM_ADSRESS) {
     dirham = DirhamContractFactory.attach(DIRHAM_ADSRESS!);
   } else {
-    dirham = await DirhamContractFactory.deploy(1000);
+    dirham = await DirhamContractFactory.deploy();
   }
   console.log("DIRHAM_ADSRESS=" + (await dirham.getAddress()));
 }

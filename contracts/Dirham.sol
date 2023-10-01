@@ -1,74 +1,37 @@
-//SPDX-License-Identifier: UNLICENSED
-
-// Solidity files have to start with this pragma.
-// It will be used by the Solidity compiler to validate its version.
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
-import "hardhat/console.sol";
 
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
 
-// This is the main building block for smart contracts.
-contract Dirham {
-    // Some string type variables to identify the Dirhams.
-    string public name = "My Hardhat Dirham";
-    string public symbol = "MHT";
+contract Dirham is ERC20, AccessControl {
+    // Define role identifiers for admin and user roles
+    bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
+    bytes32 public constant USER_ROLE = keccak256("USER_ROLE");
 
-    // The fixed amount of Dirhams, stored in an unsigned integer type variable.
-    uint256 public totalSupply = 1000000;
+    // Private balance mapping for tracking user balances
+    mapping(address => uint256) private _balances;
 
-    // An address type variable is used to store ethereum accounts.
-    address public owner;
+    // Private allowance mapping for managing delegated allowances
+    mapping(address => mapping(address => uint256)) private _allowances;
 
-    // A mapping is a key/value map. Here we store each account's balance.
-    mapping(address => uint256) balances;
-
-    // The Transfer event helps off-chain applications understand
-    // what happens within your contract.
-    event Transfer(address indexed _from, address indexed _to, uint256 _value);
-
-    /**
-     * Contract initialization.
-     */
-    constructor() {
-        // The totalSupply is assigned to the transaction sender, which is the
-        // account that is deploying the contract.
-        balances[msg.sender] = totalSupply;
-        owner = msg.sender;
+    // Contract constructor sets up roles and initializes the ERC20 token
+    constructor() ERC20("DHM", "DHM") {
+        // Set up default admin role for the contract deployer
+        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        // Assign admin role to the contract deployer
+        _setupRole(ADMIN_ROLE, msg.sender);
     }
 
-    /**
-     * A function to transfer Dirhams.
-     *
-     * The `external` modifier makes a function *only* callable from *outside*
-     * the contract.
-     */
-    function transfer(address to, uint256 amount) external {
-        // Check if the transaction sender has enough Dirhams.
-        // If `require`'s first argument evaluates to `false` then the
-        // transaction will revert.
-        require(balances[msg.sender] >= amount, "Not enough Dirhams");
-
-        console.log(
-        "Transferring from %s to %s %s Dirhams",
-        msg.sender,
-        to,
-        amount
-    );
-
-        // Transfer the amount.
-        balances[msg.sender] -= amount;
-        balances[to] += amount;
-
-        // Notify off-chain applications of the transfer.
-        emit Transfer(msg.sender, to, amount);
+    // Function to mint new tokens and assign them to the specified address
+    function mint(address to, uint256 amount) public {
+        // Mint new tokens and assign them to the target address
+        _mint(to, amount);
     }
 
-    /**
-     * Read only function to retrieve the Dirhams balance of a given account.
-     *
-     * The `view` modifier indicates that it doesn't modify the contract's
-     * state, which allows us to call it without executing a transaction.
-     */
-    function balanceOf(address account) external view returns (uint256) {
-        return balances[account];
+    // Function to burn a specific amount of tokens from a user's account
+    function burn(address _account, uint256 _amount) public {
+        // Burn the specified amount of tokens from the user's account
+        _burn(_account, _amount);
     }
 }
