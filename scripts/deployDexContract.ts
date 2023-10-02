@@ -3,7 +3,7 @@ import readline from "readline";
 
 const rl = readline.createInterface(process.stdin, process.stdout);
 require("dotenv").config();
-const { DIRHAM_ADSRESS, DEX_CONTRACT_ADSRESS } = process.env;
+const { DIRHAM_ADSRESS, DEX_CONTRACT_ADSRESS, USDT_ADDRESS } = process.env;
 
 async function main() {
   const [deployer] = await ethers.getSigners();
@@ -12,7 +12,7 @@ async function main() {
   if (DEX_CONTRACT_ADSRESS) {
     dirham = DexContractFactory.attach(DEX_CONTRACT_ADSRESS!);
   } else {
-    dirham = await DexContractFactory.deploy(DIRHAM_ADSRESS!);
+    dirham = await DexContractFactory.deploy(DIRHAM_ADSRESS);
   }
   console.log("DIRHAM_ADSRESS=" + (await dirham.getAddress()));
 }
