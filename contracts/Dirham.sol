@@ -12,6 +12,20 @@ contract Dirham is ERC20, AccessControl {
 
     mapping(address => uint256) public exchangeRates;
 
+    event TokensPurchased(
+        address indexed buyer,
+        address indexed stableCoin,
+        uint256 amount
+    );
+
+    event TokensWithdrawn(
+        address indexed recipient,
+        address indexed coin,
+        uint256 amount
+    );
+
+    event ExchangeRateUpdated(address indexed token, uint256 rate);
+
     constructor(address exchangeRate) ERC20("DHM", "DHM") {
         exchangeRates[exchangeRate] = 1;
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
@@ -35,6 +49,8 @@ contract Dirham is ERC20, AccessControl {
             totalCoinValue
         );
         _mint(msg.sender, _amount);
+
+        emit TokensPurchased(msg.sender, _stableCoin, _amount);
     }
 
     function withdraw(
@@ -55,5 +71,16 @@ contract Dirham is ERC20, AccessControl {
             convertedAmount
         );
         _burn(msg.sender, amount);
+
+        emit TokensWithdrawn(to, coin, amount);
+    }
+
+    function setExchangeRate(
+        address token,
+        uint256 rate
+    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        require(token != address(0), "UnsupportedCoin");
+        exchangeRates[token] = rate;
+        emit ExchangeRateUpdated(token, rate);
     }
 }
