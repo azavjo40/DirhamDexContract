@@ -6,8 +6,7 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 
 contract Dirham is ERC20, AccessControl {
     // Define role identifiers for admin and user roles
-    bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
-    bytes32 public constant USER_ROLE = keccak256("USER_ROLE");
+    bytes32 private constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
     // Private balance mapping for tracking user balances
     mapping(address => uint256) private _balances;
@@ -17,14 +16,11 @@ contract Dirham is ERC20, AccessControl {
 
     // Contract constructor sets up roles and initializes the ERC20 token
     constructor() ERC20("DHM", "DHM") {
-        // Set up default admin role for the contract deployer
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        // Assign admin role to the contract deployer
-        _setupRole(ADMIN_ROLE, msg.sender);
     }
 
     // Function to mint new tokens and assign them to the specified address
-    function mint(address to, uint256 amount) public {
+    function mint(address to, uint256 amount) public onlyRole(MINTER_ROLE) {
         // Mint new tokens and assign them to the target address
         _mint(to, amount);
     }

@@ -3,7 +3,7 @@ import readline from "readline";
 
 const rl = readline.createInterface(process.stdin, process.stdout);
 require("dotenv").config();
-const { DIRHAM_ADSRESS, DEX_CONTRACT_ADSRESS, USDT_ADDRESS } = process.env;
+const { DIRHAM_ADSRESS, DEX_CONTRACT_ADSRESS }: any = process.env;
 
 async function main() {
   const [deployer] = await ethers.getSigners();
@@ -14,7 +14,7 @@ async function main() {
   } else {
     dirham = await DexContractFactory.deploy(DIRHAM_ADSRESS);
   }
-  console.log("DIRHAM_ADSRESS=" + (await dirham.getAddress()));
+  console.log("DEX_CONTRACT_ADSRESS=" + (await dirham.getAddress()));
 }
 
 rl.question("Continue? (y/N)", (a) => {
