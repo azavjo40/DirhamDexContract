@@ -3,7 +3,7 @@ import readline from "readline";
 
 const rl = readline.createInterface(process.stdin, process.stdout);
 require("dotenv").config();
-const { DIRHAM_ADSRESS, USDT_ADDRESS } = process.env;
+const { DIRHAM_ADSRESS } = process.env;
 
 async function main() {
   const [deployer] = await ethers.getSigners();
@@ -12,9 +12,9 @@ async function main() {
   if (DIRHAM_ADSRESS) {
     dirham = DirhamContractFactory.attach(DIRHAM_ADSRESS!);
   } else {
-    dirham = await DirhamContractFactory.deploy(USDT_ADDRESS!);
+    dirham = await DirhamContractFactory.deploy();
   }
-  console.log("DIRHAM_ADSRESS=" + (await dirham.getAddress()));
+  console.log("DIRHAM_ADSRESS=" + dirham.address);
 }
 
 rl.question("Continue? (y/N)", (a) => {
@@ -31,3 +31,4 @@ rl.question("Continue? (y/N)", (a) => {
 });
 
 //run script: npx hardhat run scripts/deployDirham.ts --network sepolia
+//veryfy: npx hardhat verify 0x43d831b82BaA9DD7b8aF89071d04fbF775324DE2 --network sepolia

@@ -3,7 +3,7 @@ import readline from "readline";
 
 const rl = readline.createInterface(process.stdin, process.stdout);
 require("dotenv").config();
-const { USDT_ADDRESS, DIRHAM_ADSRESS }: any = process.env;
+const { DIRHAM_ADSRESS, USDT_ADDRESS, BUSD_ADDRESS, USDC_ADDRESS }: any = process.env;
 
 interface IDirhamContract {
   setExchangeRate(token: string, rate: number): Promise<void>;

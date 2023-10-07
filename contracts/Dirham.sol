@@ -9,6 +9,7 @@ contract Dirham is ERC20, AccessControl {
     bytes32 private constant MINTER_ROLE = keccak256("MINTER_ROLE");
     uint256 private constant BPS = 10_000;
     uint256 private constant WITHDRAW_GAS_ESTIMATE = 400;
+    uint256 public test = 1000;
 
     mapping(address => uint256) public exchangeRates;
 
@@ -26,8 +27,7 @@ contract Dirham is ERC20, AccessControl {
 
     event ExchangeRateUpdated(address indexed token, uint256 rate);
 
-    constructor(address exchangeRate) ERC20("DHM", "DHM") {
-        exchangeRates[exchangeRate] = 1;
+    constructor() ERC20("DHM", "DHM") {
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _setRoleAdmin(MINTER_ROLE, DEFAULT_ADMIN_ROLE);
     }
@@ -76,7 +76,8 @@ contract Dirham is ERC20, AccessControl {
     }
 
     function setExchangeRate(
-        address token,uint256 rate
+        address token,
+        uint256 rate
     ) external onlyRole(DEFAULT_ADMIN_ROLE) {
         require(token != address(0), "UnsupportedCoin");
         exchangeRates[token] = rate;
