@@ -1,0 +1,202 @@
+{
+  "manifestVersion": "3.2",
+  "admin": {
+    "address": "0x635eD30f2d24F635E79dEd39dFbD9Ef18Abe57E4",
+    "txHash": "0x9c1080a53f892ecc7d85e058fcf10636219f26d5b28b996782fbb6f93e3565b0"
+  },
+  "proxies": [
+    {
+      "address": "0xe4d3D8497BE76F8D46a5b722f9e090b1c6300037",
+      "txHash": "0x937e13720ce90dd2e0ed7ef71971883b1ad2e3e17f6ee2b33efb995ac7fbb9ac",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x1342a9c5627fe98A6c115297c21F673dc077Bb4e",
+      "txHash": "0x3aca42f6baa1cd9c66c5bd31e496b9a6a0ee57df550f839b9ffcf61a507ade76",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x2D41C8e63710428d1b3D953747be5E52eDC3b842",
+      "txHash": "0x92053817cdb4a6c199aca8ee63113fa54a56cd837cf1a6bfb4c8a1001a20f102",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xad06034E1503c2D90E2D46d964AdC40c29200699",
+      "txHash": "0xef756db5be00dd4d5d4a3c753d20b36bb3f51fbfc45c0179286333aa82afb2f9",
+      "kind": "transparent"
+    }
+  ],
+  "impls": {
+    "0b85c860c88486a94dc7461ab527b9dd4d6057540ada02dc495c1c757d098d80": {
+      "address": "0x0Eda9953BDcFB5f3638b83EAbAF211C315E601bB",
+      "txHash": "0x433fb3b453928182f283df75519922e5172d89a4394b9d766a2b02f70469d1d2",
+      "layout": {
+        "solcVersion": "0.8.19",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC165Upgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol:41"
+          },
+          {
+            "label": "_roles",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_mapping(t_bytes32,t_struct(RoleData)80_storage)",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:62"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:260"
+          },
+          {
+            "label": "_owner",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_address",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:22"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:94"
+          },
+          {
+            "label": "dirhamToken",
+            "offset": 0,
+            "slot": "201",
+            "type": "t_contract(DIRHAM)6461",
+            "contract": "Exchange",
+            "src": "contracts/Exchange.sol:35"
+          },
+          {
+            "label": "coldWallet",
+            "offset": 0,
+            "slot": "202",
+            "type": "t_address",
+            "contract": "Exchange",
+            "src": "contracts/Exchange.sol:36"
+          },
+          {
+            "label": "rootReferrer",
+            "offset": 0,
+            "slot": "203",
+            "type": "t_address",
+            "contract": "Exchange",
+            "src": "contracts/Exchange.sol:37"
+          },
+          {
+            "label": "exchangeRates",
+            "offset": 0,
+            "slot": "204",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "Exchange",
+            "src": "contracts/Exchange.sol:39"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_contract(DIRHAM)6461": {
+            "label": "contract DIRHAM",
+            "numberOfBytes": "20"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(RoleData)80_storage)": {
+            "label": "mapping(bytes32 => struct AccessControlUpgradeable.RoleData)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(RoleData)80_storage": {
+            "label": "struct AccessControlUpgradeable.RoleData",
+            "members": [
+              {
+                "label": "members",
+                "type": "t_mapping(t_address,t_bool)",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "adminRole",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        },
+        "namespaces": {}
+      }
+    }
+  }
+}

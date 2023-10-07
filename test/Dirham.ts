@@ -7,7 +7,7 @@ describe("Dirham contract v 1", function () {
   it("Should transfer dirhams between accounts", async function () {
     const [owner, addr1, addr2] = await ethers.getSigners();
 
-    const hardhatDirham = await ethers.deployContract("Dirham");
+    const hardhatDirham = await ethers.deployContract("DIRHAM");
 
     // Transfer 50 Dirhams from owner to addr1
     await hardhatDirham.transfer(addr1.address, 50);
