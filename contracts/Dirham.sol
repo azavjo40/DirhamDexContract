@@ -76,8 +76,7 @@ contract Dirham is ERC20, AccessControl {
     }
 
     function setExchangeRate(
-        address token,
-        uint256 rate
+        address token,uint256 rate
     ) external onlyRole(DEFAULT_ADMIN_ROLE) {
         require(token != address(0), "UnsupportedCoin");
         exchangeRates[token] = rate;

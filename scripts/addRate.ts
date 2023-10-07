@@ -3,9 +3,9 @@ import readline from "readline";
 
 const rl = readline.createInterface(process.stdin, process.stdout);
 require("dotenv").config();
-const { USDT_ADDRESS, DEX_CONTRACT_ADSRESS }: any = process.env;
+const { USDT_ADDRESS, DIRHAM_ADSRESS }: any = process.env;
 
-interface IDexContract {
+interface IDirhamContract {
   setExchangeRate(token: string, rate: number): Promise<void>;
 }
 
@@ -15,12 +15,11 @@ async function main() {
     const [owner] = await ethers.getSigners();
     console.log("Using account:", deployer.address);
 
-    const DexContractFactory = await ethers.getContractFactory("DexContract");
+    const DirhamContractFactory = await ethers.getContractFactory("Dirham");
 
-    const dex: IDexContract = DexContractFactory.attach(DEX_CONTRACT_ADSRESS!) as unknown as IDexContract;
-    const res = await dex.setExchangeRate(USDT_ADDRESS, 1);
+    const dirham: IDirhamContract = DirhamContractFactory.attach(DIRHAM_ADSRESS!) as unknown as IDirhamContract;
+    const res = await dirham.setExchangeRate(USDT_ADDRESS!, 1);
     console.log(res);
-    console.log("Users", res);
   } catch (e) {
     console.log(e);
   }

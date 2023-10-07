@@ -12,7 +12,7 @@ async function main() {
   if (DIRHAM_ADSRESS) {
     dirham = DirhamContractFactory.attach(DIRHAM_ADSRESS!);
   } else {
-    dirham = await DirhamContractFactory.deploy(USDT_ADDRESS);
+    dirham = await DirhamContractFactory.deploy(USDT_ADDRESS!);
   }
   console.log("DIRHAM_ADSRESS=" + (await dirham.getAddress()));
 }
