@@ -31,10 +31,11 @@ contract Exchange is
 
     DIRHAM private dirhamToken;
     address private coldWallet;
-    address private rootReferrer;
 
     mapping(address => uint256) public exchangeRates;
+
     bytes32 private constant MARKETING_ROLE = keccak256("MARKETING_ROLE");
+    bytes32 private constant USER_ROLE = keccak256("USER_ROLE");
 
     function initialize(
         address _DIRHAMToken,
@@ -53,7 +54,24 @@ contract Exchange is
         coldWallet = _coldWallet;
     }
 
-    function buyTokens(address _stableCoin, uint256 _amount) external {
+    modifier onlyAdminErrorMessage(string memory errorMsg) {
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), errorMsg);
+        _;
+    }
+
+    modifier userErrorMessage(string memory errorMsg, bool isOnly) {
+        if (isOnly) {
+            require(hasRole(USER_ROLE, msg.sender), errorMsg);
+        } else {
+            require(!hasRole(USER_ROLE, msg.sender), errorMsg);
+        }
+        _;
+    }
+
+    function buyTokens(
+        address _stableCoin,
+        uint256 _amount
+    ) external userErrorMessage("User is not registered to  buy tokens", true) {
         uint256 rate = exchangeRates[_stableCoin];
 
         uint256 totalCoinValue = ((_amount * rate) / BPS);
@@ -78,7 +96,10 @@ contract Exchange is
         address coin,
         address to,
         uint256 amount
-    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
+    )
+        external
+        onlyAdminErrorMessage("You do not have the necessary role to withdraw")
+    {
         uint256 exchangeRate = exchangeRates[coin];
 
         require(exchangeRate > 0, "UnsupportedCoin");
@@ -98,7 +119,7 @@ contract Exchange is
     function setExchangeRate(
         address token,
         uint256 rate
-    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
+    ) external onlyAdminErrorMessage("You do not have the necessary role") {
         require(token != address(0), "UnsupportedCoin");
         exchangeRates[token] = rate;
         emit ExchangeRateUpdated(token, rate);

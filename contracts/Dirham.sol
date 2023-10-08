@@ -12,14 +12,28 @@ contract DIRHAM is ERC20, AccessControl {
         _setRoleAdmin(MINTER_ROLE, DEFAULT_ADMIN_ROLE);
     }
 
-    function mint(address to, uint256 amount) public onlyRole(MINTER_ROLE) {
+    modifier onlyMinterErrorMessage(string memory errorMsg) {
+        require(hasRole(MINTER_ROLE, msg.sender), errorMsg);
+        _;
+    }
+
+    function mint(
+        address to,
+        uint256 amount
+    )
+        public
+        onlyMinterErrorMessage("You do not have the necessary role to mint")
+    {
         _mint(to, amount);
     }
 
     function burn(
         address _account,
         uint256 _amount
-    ) public onlyRole(MINTER_ROLE) {
+    )
+        public
+        onlyMinterErrorMessage("You do not have the necessary role to burn")
+    {
         _burn(_account, _amount);
     }
 }
