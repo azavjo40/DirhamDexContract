@@ -4,7 +4,7 @@ import { Exchange } from "../typechain-types";
 
 const rl = readline.createInterface(process.stdin, process.stdout);
 require("dotenv").config();
-const { DIRHAM_ADSRESS, COLD_WALLET, USDT_ADDRESS, USER_ADSRESS } = process.env;
+const { DIRHAM_ADSRESS, COLD_WALLET, USDT_ADDRESS, USER_ADSRESS, EXCHANGE_ADDRESS } = process.env;
 
 const MINTER_ROLE = ethers.utils.keccak256(ethers.utils.toUtf8Bytes("MINTER_ROLE"));
 const MARKETING_ROLE = ethers.utils.keccak256(ethers.utils.toUtf8Bytes("MARKETING_ROLE"));
@@ -22,10 +22,10 @@ async function main() {
 
   const ExchangeFactory = await ethers.getContractFactory("Exchange");
   let exchange;
-  if (process.env.EXCHANGE_ADDRESS) {
-    exchange = ExchangeFactory.attach(process.env.EXCHANGE_ADDRESS);
+  if (EXCHANGE_ADDRESS) {
+    exchange = ExchangeFactory.attach(EXCHANGE_ADDRESS);
   } else {
-    exchange = (await upgrades.deployProxy(ExchangeFactory, [dirham.address, COLD_WALLET])) as Exchange;
+    exchange = (await upgrades.deployProxy(ExchangeFactory, [dirham.address, USER_ADSRESS, COLD_WALLET])) as Exchange;
     await exchange.deployed();
     // exchange = await ExchangeFactory.deploy();
   }
@@ -64,4 +64,3 @@ rl.question("Continue? (y/N)", (a) => {
 });
 
 //run script: npx hardhat run scripts/deploy.ts --network sepolia
-//veryfy: npx hardhat verify address --network sepolia
