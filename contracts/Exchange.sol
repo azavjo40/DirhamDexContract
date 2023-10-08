@@ -6,6 +6,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "./dirham.sol";
+import "./User.sol";
 
 contract Exchange is
     Initializable,
@@ -30,6 +31,7 @@ contract Exchange is
     event ExchangeRateUpdated(address indexed token, uint256 rate);
 
     DIRHAM private dirhamToken;
+    User private userToken;
     address private coldWallet;
 
     mapping(address => uint256) public exchangeRates;
@@ -39,9 +41,14 @@ contract Exchange is
 
     function initialize(
         address _DIRHAMToken,
+        address _UserToken,
         address _coldWallet
     ) public initializer {
-        if (_DIRHAMToken == address(0) || _coldWallet == address(0)) {
+        if (
+            _DIRHAMToken == address(0) ||
+            _coldWallet == address(0) ||
+            _UserToken == address(0)
+        ) {
             revert();
         }
 
@@ -51,6 +58,7 @@ contract Exchange is
         __Ownable_init();
 
         dirhamToken = DIRHAM(_DIRHAMToken);
+        userToken = User(_UserToken);
         coldWallet = _coldWallet;
     }
 
@@ -61,9 +69,9 @@ contract Exchange is
 
     modifier userErrorMessage(string memory errorMsg, bool isOnly) {
         if (isOnly) {
-            require(hasRole(USER_ROLE, msg.sender), errorMsg);
+            require(userToken.hasRole(USER_ROLE, msg.sender), errorMsg);
         } else {
-            require(!hasRole(USER_ROLE, msg.sender), errorMsg);
+            require(!userToken.hasRole(USER_ROLE, msg.sender), errorMsg);
         }
         _;
     }
