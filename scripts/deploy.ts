@@ -4,7 +4,7 @@ import { Exchange } from "../typechain-types";
 
 const rl = readline.createInterface(process.stdin, process.stdout);
 require("dotenv").config();
-const { DIRHAM_ADSRESS, COLD_WALLET, USDT_ADDRESS } = process.env;
+const { DIRHAM_ADSRESS, COLD_WALLET, USDT_ADDRESS, USER_ADSRESS } = process.env;
 
 const MINTER_ROLE = ethers.utils.keccak256(ethers.utils.toUtf8Bytes("MINTER_ROLE"));
 const MARKETING_ROLE = ethers.utils.keccak256(ethers.utils.toUtf8Bytes("MARKETING_ROLE"));
@@ -31,11 +31,17 @@ async function main() {
   }
   console.log("EXCHANGE_ADDRESS=" + exchange.address);
 
-  // console.log("Setting exchange initialize...");
-  // await exchange.initialize(dirham.address, COLD_WALLET!);
+  const UserFactory = await ethers.getContractFactory("User");
+  let user;
+  if (USER_ADSRESS) {
+    user = UserFactory.attach(USER_ADSRESS!);
+  } else {
+    user = await UserFactory.deploy();
+  }
+  console.log("USER_ADSRESS=" + user.address);
 
   console.log("Setting exchange rate...");
-  await exchange.setExchangeRate(USDT_ADDRESS!, 10_000);
+  await exchange.setExchangeRate(USDT_ADDRESS!, 1);
 
   console.log("Setting up minter role...");
   await dirham.grantRole(MINTER_ROLE, exchange.address);

@@ -2,7 +2,7 @@ import { ethers } from "hardhat";
 import { config } from "dotenv";
 
 config();
-const { USER_CONTRACT_ADSRESS } = process.env;
+const { USER_ADSRESS } = process.env;
 
 interface IUserContract {
   getUsers(): Promise<any>;
@@ -17,7 +17,7 @@ async function main() {
 
     const UserContract = await ethers.getContractFactory("UserContract");
 
-    const user: IUserContract = UserContract.attach(USER_CONTRACT_ADSRESS!) as unknown as IUserContract;
+    const user: IUserContract = UserContract.attach(USER_ADSRESS!) as unknown as IUserContract;
     // const res = await user.registerUser("Azam", "Sufiev", 31);
     // console.log("Response", res);
     const users = await user.getUsers();
