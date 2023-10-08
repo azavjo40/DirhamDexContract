@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 
 contract User is AccessControlUpgradeable {
-    bytes32 public constant USER_ROLE = keccak256("USER_ROLE");
+    bytes32 private constant USER_ROLE = keccak256("USER_ROLE");
 
     event UserRegistered(
         uint256 userId,
