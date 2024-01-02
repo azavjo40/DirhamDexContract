@@ -29,7 +29,7 @@ async function main() {
   }
   console.log("USER_ADSRESS=" + user.address);
 
-  const ExchangeFactory = await ethers.getContractFactory("ExchangeV2");
+  const ExchangeFactory = await ethers.getContractFactory("Exchange");
   let exchange;
   if (EXCHANGE_ADDRESS) {
     exchange = ExchangeFactory.attach(EXCHANGE_ADDRESS);
