@@ -20,7 +20,16 @@ async function main() {
   }
   console.log("DIRHAM_ADSRESS=" + dirham.address);
 
-  const ExchangeFactory = await ethers.getContractFactory("Exchange");
+  const UserFactory = await ethers.getContractFactory("User");
+  let user;
+  if (USER_ADSRESS) {
+    user = UserFactory.attach(USER_ADSRESS!);
+  } else {
+    user = await UserFactory.deploy();
+  }
+  console.log("USER_ADSRESS=" + user.address);
+
+  const ExchangeFactory = await ethers.getContractFactory("ExchangeV2");
   let exchange;
   if (EXCHANGE_ADDRESS) {
     exchange = ExchangeFactory.attach(EXCHANGE_ADDRESS);
@@ -30,15 +39,6 @@ async function main() {
     // exchange = await ExchangeFactory.deploy();
   }
   console.log("EXCHANGE_ADDRESS=" + exchange.address);
-
-  const UserFactory = await ethers.getContractFactory("User");
-  let user;
-  if (USER_ADSRESS) {
-    user = UserFactory.attach(USER_ADSRESS!);
-  } else {
-    user = await UserFactory.deploy();
-  }
-  console.log("USER_ADSRESS=" + user.address);
 
   console.log("Setting exchange rate...");
   await exchange.setExchangeRate(USDT_ADDRESS!, 1);
