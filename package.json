@@ -4,7 +4,8 @@
   "scripts": {
     "cleanup": "npx rimraf cache artifacts typechain-types node_modules package-lock.json",
     "hardhat:compile": "npx hardhat compile",
-    "hardhat:test": "npx hardhat test --network sepolia",
+    "hardhat:test:sepolia": "npx hardhat test --network sepolia",
+    "hardhat:test": "npx hardhat test",
     "hardhat:node": "npx hardhat node",
     "hardhat:deploy": "npx hardhat run scripts/deploy.ts --network sepolia",
     "hardhat:deploy:veryfy": "npx hardhat verify 'adress contract' --network sepolia"
