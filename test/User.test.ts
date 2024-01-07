@@ -23,6 +23,10 @@ describe("User Contract", function () {
       const receipt = await tx.wait();
       const event = receipt.events?.find((e) => e.event === "UserRegistered");
       expect(event?.args?.walletAddress).to.equal(await owner.getAddress());
+
+      // await expect(user.connect(owner).register("Azam", "Sufiev", 31))
+      //   .to.emit(user, "UserRegistered")
+      //   .withArgs(0, await owner.getAddress());
     });
 
     it("Should not allow re-registering the same address", async function () {
