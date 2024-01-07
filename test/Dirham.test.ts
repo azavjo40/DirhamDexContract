@@ -1,9 +1,10 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
-import { Contract, Signer } from "ethers";
+import { Signer } from "ethers";
+import { DIRHAM } from "../typechain-types";
 
 describe("DIRHAM Contract", function () {
-  let dirham: Contract;
+  let dirham: DIRHAM;
   let owner: Signer;
   let addr1: Signer;
   let addr2: Signer;
