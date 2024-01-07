@@ -44,9 +44,9 @@ describe("ExchangeV2 Contract", function () {
       await exchange.deployed();
       // exchange = await ExchangeFactory.deploy();
     }
-    await exchange.setExchangeRate(USDT_ADDRESS!, 1);
-    await dirham.grantRole(MINTER_ROLE, exchange.address);
-    await exchange.grantRole(MARKETING_ROLE, owner.getAddress());
+    // await exchange.setExchangeRate(USDT_ADDRESS!, 1);
+    // await dirham.grantRole(MINTER_ROLE, exchange.address);
+    // await exchange.grantRole(MARKETING_ROLE, owner.getAddress());
 
     usdtToken = await ethers.getContractAt("IERC20", USDT_ADDRESS!);
   });
