@@ -60,9 +60,9 @@ describe('ExchangeV2 Contract', function () {
       await exchange.deployed();
       // exchange = await ExchangeFactory.deploy();
     }
-    // await exchange.setExchangeRate(USDT_ADDRESS!, 1);
-    // await dirham.grantRole(MINTER_ROLE, exchange.address);
-    // await exchange.grantRole(MARKETING_ROLE, owner.getAddress());
+    await exchange.setExchangeRate(USDT_ADDRESS!, 1);
+    await dirham.grantRole(MINTER_ROLE, exchange.address);
+    await exchange.grantRole(MARKETING_ROLE, owner.getAddress());
 
     usdtToken = await ethers.getContractAt('IERC20', USDT_ADDRESS!);
   });
@@ -87,7 +87,7 @@ describe('ExchangeV2 Contract', function () {
     });
   });
 
-  describe('Buy token', function () {
+  describe('Buy or withdraw tokens', function () {
     it('Should allow buying tokens', async function () {
       const ownerAddress = await owner.getAddress();
 
@@ -138,6 +138,25 @@ describe('ExchangeV2 Contract', function () {
     //     amountToWithdraw.toString()
     //   );
     // });
+  });
+
+  describe('Exchange rate', function () {
+    it('Should allow set rate', async function () {
+      const rate = 1;
+      const tx = await exchange.setExchangeRate(USDT_ADDRESS!, rate);
+      const receipt = await tx.wait();
+      const event = receipt.events?.find(
+        (e) => e.event === 'ExchangeRateUpdated'
+      );
+
+      expect(event?.args?.token).to.equal(USDT_ADDRESS!);
+      expect(event?.args?.rate).to.equal(rate);
+    });
+
+    it('Should allow get rate usdt', async function () {
+      const usdtRate = await exchange.exchangeRates(USDT_ADDRESS!);
+      expect(usdtRate.toNumber()).to.be.a('number');
+    });
   });
 });
 
